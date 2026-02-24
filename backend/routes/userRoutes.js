@@ -10,10 +10,10 @@ const {
 } = require("../controllers/userController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/register", createUser);
+router.post("/auth/register", createUser);
 router.get("/:id", authMiddleware, getUser);
 router.put("/:id", authMiddleware, updateUser);
 router.delete("/:id", authMiddleware, deleteUser);
 router.get("/",authMiddleware,getAllUsers);
-router.post("/login",LoginUser)
+router.post("/auth/login",LoginUser)
 module.exports = router;
