@@ -16,9 +16,13 @@ exports.createUser = async (req, res) => {
         .status(400)
         .json({ success: false, message: "User already Exists" });
     }
-    const hashedPassword=await bcrypt.hash(password,10);
-    const user = await User.create({ name, email, password:hashedPassword });
-    res.status(201).json({ success: true, message: "User created successfully", user:{id:user._id,name:user.name,email:user.email} });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword });
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: { id: user._id, name: user.name, email: user.email },
+    });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
@@ -94,16 +98,24 @@ exports.LoginUser = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    const isMatch=await bcrypt.compare(password,user.password)
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
     }
-    const token=jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1d"})
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
-    res.status(200).json({ success: true, message: "Login successful", user,token });
+    res
+      .status(200)
+      .json({ success: true, message: "Login successful", user, token });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
+};
+exports.logoutUser = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully " });
 };
