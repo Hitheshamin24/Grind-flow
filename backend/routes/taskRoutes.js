@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.post("/create-task",authMiddleware,createTask);
-router.get("/tasks",authMiddleware,getTasks);
+router.get("/get-tasks",authMiddleware,getTasks);
 router.put("/update-task/:id",authMiddleware,updateTask);
 router.put("/complete-task/:id",authMiddleware,completeTask);
 router.delete("/delete-task/:id",authMiddleware,deleteTask);
