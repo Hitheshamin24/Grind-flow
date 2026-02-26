@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { login, register } from "../api/auth";
-
+import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [mode, setMode] = useState("login");
-
+const navigate=useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -14,7 +14,7 @@ const AuthPage = () => {
         const response = await login(email, password);
         const data = response.data;
         localStorage.setItem("token", data.token);
-        alert("Login successful!");
+        navigate("/dashboard")
       } else {
         await register(name, email, password);
         alert("Registration successful! You can now log in.");
